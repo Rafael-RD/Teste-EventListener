@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>EventListener</title>
+</head>
+<body>
+    <header>EventListener</header>
+    <main>
+        <section class="mouse leaveout">
+            <span>mouseleave e mouseout     clique em mim para ativar</span>
+            <div><div><div><div></div></div></div></div>
+        </section>
+        <section class="mouse move">
+            <span>mousemove     clique em mim para ativar</span>
+            <div><div><div><div></div></div></div></div>
+        </section>
+        <section class="keyboard">
+            <span>keyboard events     clique em mim para ativar</span>
+            <input class="inline-editor" type="text" placeholder="input" />
+            <textarea class="multiline-editor" placeholder="textarea"></textarea>
+            <table class="summary">
+            <tbody>
+                <tr>
+                <th>Latest values of</th><th><code>keyCode</code></th><th><code>which</code></th><th><code>target.value</code></th>
+                </tr>
+                <tr id="keydown"> <th>down</th> <td></td><td></td><td></td></tr>
+                <tr id="keypress"><th>press</th><td></td><td></td><td></td></tr>
+                <tr id="keyup">   <th>up</th>   <td></td><td></td><td></td></tr>
+            </tbody>
+            </table>
+            <div class="clean"><button class="clean__button">clean</button></div>
+        </section>
+    </main>
+    <script>
+        let capture=false;
+        
+        function mouseCallback(e){
+            console.log(e);
+            console.log(event)
+            console.log(e.type);
+            console.log('Dono do evento:');
+            console.log(this);
+            console.log('Onde o evento aconteceu:')
+            console.log(e.target);
+            console.log('-----------------------------------')
+        }
+        
+        //-----------------mouse leave e mouse out
+
+        document.querySelector('.leaveout > span').addEventListener('click', function(){
+            console.log('leave e out ativado');
+
+            document.querySelector('.leaveout > div').addEventListener('mouseleave', mouseCallback, capture);
+            document.querySelector('.leaveout > div').addEventListener('mouseout', mouseCallback, capture);
+        });
+
+        //----------------mouse move
+
+        document.querySelector('.move > span').addEventListener('click', function(){
+            console.log('move ativado');
+            document.querySelector('.move > div').addEventListener('mousemove',function (){
+                console.log(event)
+                console.log(event.type);
+                console.log('Dono do evento:');
+                console.log(this);
+                console.log('Onde o evento aconteceu:')
+                console.log(event.target);
+                console.log('-----------------------------------')
+            });
+        });
+        
+        
+        //-----------------keyboard
+        
+        function keyboardCallback(){
+            console.log(event.type);
+            const element = document.getElementById(event.type)
+            
+            const value = event.target.value
+            element.children[1].innerHTML = event.keyCode
+            element.children[2].innerHTML = event.which
+            element.children[3].innerHTML = value
+        }
+        
+        
+        const inline = document.querySelector('.inline-editor');
+        const multiline = document.querySelector('.multiline-editor');
+        
+        document.querySelector('.keyboard > span').addEventListener('click', function() {
+            
+            console.log('keys ativado');
+            inline.addEventListener('keydown', keyboardCallback, false);
+            inline.addEventListener('keypress', keyboardCallback, false);
+            inline.addEventListener('keyup', keyboardCallback, false);
+            
+            multiline.addEventListener('keydown', keyboardCallback, false);
+            multiline.addEventListener('keypress', keyboardCallback, false);
+            multiline.addEventListener('keyup', keyboardCallback, false);
+        });
+        
+
+        document.querySelector('.clean__button').addEventListener('click', function (){
+            inline.value='';
+            multiline.value='';
+        });
+
+
+    </script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
